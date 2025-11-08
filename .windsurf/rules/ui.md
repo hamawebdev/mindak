@@ -1,5 +1,5 @@
 ---
-type: "always_apply"
+trigger: always_on
 ---
 
 Before creating or enhancing **ANY** UI components:
@@ -12,4 +12,5 @@ Before creating or enhancing **ANY** UI components:
 6. Use GSAP for complex animations.
 7. Use CSS transitions for simple hover or UI feedback effects.
 8. Avoid other animation libraries.
-9. Do not clone font or colors of the refrence, use the exsiting design system
+
+ follow established patterns**

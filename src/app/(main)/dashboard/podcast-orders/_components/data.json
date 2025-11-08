@@ -1,0 +1,203 @@
+[
+  {
+    "id": "PO-2024-001",
+    "customerName": "Sarah Johnson",
+    "email": "sarah.johnson@example.com",
+    "status": "completed",
+    "createdDate": "2024-11-01",
+    "podcastTitle": "Tech Talks Weekly",
+    "episodeCount": 12,
+    "duration": "30 min",
+    "category": "Technology",
+    "budget": 5000,
+    "deliveryDate": "2024-12-15",
+    "notes": "Client prefers morning recordings. Needs transcripts for all episodes.",
+    "formData": {
+      "targetAudience": "Tech professionals aged 25-45",
+      "tone": "Professional yet conversational",
+      "format": "Interview-style with industry experts",
+      "additionalRequirements": "Include intro/outro music, professional editing"
+    }
+  },
+  {
+    "id": "PO-2024-002",
+    "customerName": "Michael Chen",
+    "email": "michael.chen@startup.io",
+    "status": "processing",
+    "createdDate": "2024-11-03",
+    "podcastTitle": "Startup Stories",
+    "episodeCount": 8,
+    "duration": "45 min",
+    "category": "Business",
+    "budget": 3500,
+    "deliveryDate": "2024-12-01",
+    "notes": "Focus on founder journeys and lessons learned.",
+    "formData": {
+      "targetAudience": "Entrepreneurs and startup enthusiasts",
+      "tone": "Inspirational and authentic",
+      "format": "Narrative storytelling with founder interviews",
+      "additionalRequirements": "Social media clips for each episode"
+    }
+  },
+  {
+    "id": "PO-2024-003",
+    "customerName": "Emily Rodriguez",
+    "email": "emily.r@wellness.com",
+    "status": "pending",
+    "createdDate": "2024-11-05",
+    "podcastTitle": "Mindful Living",
+    "episodeCount": 10,
+    "duration": "25 min",
+    "category": "Health & Wellness",
+    "budget": 2800,
+    "deliveryDate": "2024-12-20",
+    "notes": "Calming background music essential. Client wants meditation segments.",
+    "formData": {
+      "targetAudience": "Adults seeking work-life balance",
+      "tone": "Calm, soothing, and encouraging",
+      "format": "Solo host with guided exercises",
+      "additionalRequirements": "Binaural audio for meditation segments"
+    }
+  },
+  {
+    "id": "PO-2024-004",
+    "customerName": "David Thompson",
+    "email": "d.thompson@history.edu",
+    "status": "processing",
+    "createdDate": "2024-11-02",
+    "podcastTitle": "History Uncovered",
+    "episodeCount": 15,
+    "duration": "50 min",
+    "category": "Education",
+    "budget": 6200,
+    "deliveryDate": "2025-01-10",
+    "notes": "Academic quality required. Fact-checking is crucial.",
+    "formData": {
+      "targetAudience": "History enthusiasts and students",
+      "tone": "Educational yet engaging",
+      "format": "Documentary-style with expert commentary",
+      "additionalRequirements": "Detailed show notes with sources and references"
+    }
+  },
+  {
+    "id": "PO-2024-005",
+    "customerName": "Jessica Martinez",
+    "email": "jess.martinez@creative.co",
+    "status": "completed",
+    "createdDate": "2024-10-28",
+    "podcastTitle": "Creative Minds",
+    "episodeCount": 6,
+    "duration": "35 min",
+    "category": "Arts & Culture",
+    "budget": 2400,
+    "deliveryDate": "2024-11-25",
+    "notes": "Highlight diverse artists and their creative processes.",
+    "formData": {
+      "targetAudience": "Artists, designers, and creative professionals",
+      "tone": "Inspiring and thought-provoking",
+      "format": "Conversational interviews",
+      "additionalRequirements": "High-quality audio with minimal background noise"
+    }
+  },
+  {
+    "id": "PO-2024-006",
+    "customerName": "Robert Kim",
+    "email": "robert.kim@finance.com",
+    "status": "pending",
+    "createdDate": "2024-11-04",
+    "podcastTitle": "Money Matters",
+    "episodeCount": 20,
+    "duration": "40 min",
+    "category": "Finance",
+    "budget": 8500,
+    "deliveryDate": "2025-02-01",
+    "notes": "Weekly release schedule. Needs to comply with financial advice disclaimers.",
+    "formData": {
+      "targetAudience": "Young professionals and investors",
+      "tone": "Informative and trustworthy",
+      "format": "Expert interviews with Q&A segments",
+      "additionalRequirements": "Legal review for compliance, transcripts required"
+    }
+  },
+  {
+    "id": "PO-2024-007",
+    "customerName": "Amanda Foster",
+    "email": "amanda.f@sports.net",
+    "status": "cancelled",
+    "createdDate": "2024-10-25",
+    "podcastTitle": "Sports Insider",
+    "episodeCount": 10,
+    "duration": "55 min",
+    "category": "Sports",
+    "budget": 4200,
+    "deliveryDate": "2024-12-10",
+    "notes": "Project cancelled due to budget constraints.",
+    "formData": {
+      "targetAudience": "Sports fans and athletes",
+      "tone": "Energetic and passionate",
+      "format": "Panel discussion with sports analysts",
+      "additionalRequirements": "Video recording for YouTube distribution"
+    }
+  },
+  {
+    "id": "PO-2024-008",
+    "customerName": "Christopher Lee",
+    "email": "chris.lee@science.org",
+    "status": "processing",
+    "createdDate": "2024-11-01",
+    "podcastTitle": "Science Simplified",
+    "episodeCount": 12,
+    "duration": "30 min",
+    "category": "Science",
+    "budget": 4800,
+    "deliveryDate": "2024-12-30",
+    "notes": "Make complex topics accessible to general audience.",
+    "formData": {
+      "targetAudience": "Science enthusiasts and curious learners",
+      "tone": "Friendly and accessible",
+      "format": "Educational with real-world examples",
+      "additionalRequirements": "Visual aids for companion blog posts"
+    }
+  },
+  {
+    "id": "PO-2024-009",
+    "customerName": "Lisa Anderson",
+    "email": "lisa.a@parenting.com",
+    "status": "pending",
+    "createdDate": "2024-11-05",
+    "podcastTitle": "Modern Parenting",
+    "episodeCount": 8,
+    "duration": "35 min",
+    "category": "Family & Parenting",
+    "budget": 3200,
+    "deliveryDate": "2024-12-18",
+    "notes": "Focus on evidence-based parenting advice.",
+    "formData": {
+      "targetAudience": "Parents of children aged 0-12",
+      "tone": "Supportive and non-judgmental",
+      "format": "Expert interviews with practical tips",
+      "additionalRequirements": "Downloadable resource guides for each episode"
+    }
+  },
+  {
+    "id": "PO-2024-010",
+    "customerName": "James Wilson",
+    "email": "james.wilson@travel.world",
+    "status": "completed",
+    "createdDate": "2024-10-20",
+    "podcastTitle": "Wanderlust Adventures",
+    "episodeCount": 10,
+    "duration": "40 min",
+    "category": "Travel",
+    "budget": 3800,
+    "deliveryDate": "2024-11-15",
+    "notes": "Include ambient sounds from destinations. Very satisfied with results.",
+    "formData": {
+      "targetAudience": "Travel enthusiasts and digital nomads",
+      "tone": "Adventurous and inspiring",
+      "format": "Travel stories with destination guides",
+      "additionalRequirements": "Location-specific sound design and music"
+    }
+  }
+]
+

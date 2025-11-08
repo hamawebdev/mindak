@@ -1,5 +1,5 @@
 import { HeroHeader } from "@/components/agency/hero-header";
 
-export default function Home() {
+export default function HeroDemoPage() {
   return <HeroHeader />;
 }
