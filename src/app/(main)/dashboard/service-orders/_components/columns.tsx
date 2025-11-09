@@ -7,29 +7,39 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { ServiceOrder } from "./schema";
+import type { ServiceReservationListItem } from "./schema";
 
 const statusVariants: Record<
-  ServiceOrder["status"],
-  { variant: "default" | "secondary" | "destructive" | "outline"; label: string }
+  ServiceReservationListItem["status"],
+  { 
+    variant: "default" | "secondary" | "destructive" | "outline"; 
+    label: string;
+    className: string;
+  }
 > = {
-  pending: { variant: "outline", label: "Pending" },
-  "in-progress": { variant: "secondary", label: "In Progress" },
-  completed: { variant: "default", label: "Completed" },
-  cancelled: { variant: "destructive", label: "Cancelled" },
+  pending: { 
+    variant: "outline", 
+    label: "Pending",
+    className: "bg-amber-500/10 text-amber-700 border-amber-500/30 dark:text-amber-400"
+  },
+  confirmed: { 
+    variant: "secondary", 
+    label: "Confirmed",
+    className: "bg-blue-500/10 text-blue-700 border-blue-500/30 dark:text-blue-400"
+  },
+  completed: { 
+    variant: "default", 
+    label: "Completed",
+    className: "bg-green-500/10 text-green-700 border-green-500/30 dark:text-green-400"
+  },
+  cancelled: { 
+    variant: "destructive", 
+    label: "Cancelled",
+    className: "bg-red-500/10 text-red-700 border-red-500/30 dark:text-red-400"
+  },
 };
 
-const priorityVariants: Record<
-  ServiceOrder["priority"],
-  { variant: "default" | "secondary" | "destructive" | "outline"; label: string; color: string }
-> = {
-  low: { variant: "outline", label: "Low", color: "text-blue-600" },
-  medium: { variant: "secondary", label: "Medium", color: "text-yellow-600" },
-  high: { variant: "default", label: "High", color: "text-orange-600" },
-  urgent: { variant: "destructive", label: "Urgent", color: "text-red-600" },
-};
-
-export const serviceOrderColumns: ColumnDef<ServiceOrder>[] = [
+export const serviceOrderColumns: ColumnDef<ServiceReservationListItem>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -54,83 +64,49 @@ export const serviceOrderColumns: ColumnDef<ServiceOrder>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Order ID" />,
-    cell: ({ row }) => <span className="font-medium tabular-nums">{row.original.id}</span>,
+    accessorKey: "confirmationId",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Confirmation ID" />,
+    cell: ({ row }) => <span className="font-medium tabular-nums">{row.original.confirmationId}</span>,
     enableHiding: false,
   },
   {
-    accessorKey: "customerName",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Customer Name" />,
-    cell: ({ row }) => <span className="font-medium">{row.original.customerName}</span>,
-    enableHiding: false,
+    accessorKey: "clientId",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Client ID" />,
+    cell: ({ row }) => (
+      <span className="text-muted-foreground font-mono text-xs">{row.original.clientId.slice(0, 8)}...</span>
+    ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
-    cell: ({ row }) => <span className="text-muted-foreground">{row.original.email}</span>,
-  },
-  {
-    accessorKey: "serviceType",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Service Type" />,
-    cell: ({ row }) => <span className="font-medium">{row.original.serviceType}</span>,
+    accessorKey: "serviceIds",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Services" />,
+    cell: ({ row }) => {
+      const count = row.original.serviceIds.length;
+      return (
+        <Badge variant="outline">
+          {count} {count === 1 ? "Service" : "Services"}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "status",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
       const status = row.original.status;
-      const { variant, label } = statusVariants[status];
-      return <Badge variant={variant}>{label}</Badge>;
+      const { label, className } = statusVariants[status];
+      return <Badge className={className}>{label}</Badge>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
-    accessorKey: "priority",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Priority" />,
+    accessorKey: "submittedAt",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Submitted" />,
     cell: ({ row }) => {
-      const priority = row.original.priority;
-      const { variant, label } = priorityVariants[priority];
-      return <Badge variant={variant}>{label}</Badge>;
+      const date = new Date(row.original.submittedAt);
+      return <span className="text-muted-foreground tabular-nums">{format(date, "MMM dd, yyyy HH:mm")}</span>;
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "budget",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Budget" />,
-    cell: ({ row }) => {
-      const amount = row.original.budget;
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-      return <span className="tabular-nums">{formatted}</span>;
-    },
-  },
-  {
-    accessorKey: "createdDate",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Created Date" />,
-    cell: ({ row }) => {
-      const date = new Date(row.original.createdDate);
-      return <span className="text-muted-foreground tabular-nums">{format(date, "MMM dd, yyyy")}</span>;
-    },
-  },
-  {
-    accessorKey: "estimatedCompletion",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Est. Completion" />,
-    cell: ({ row }) => {
-      const date = new Date(row.original.estimatedCompletion);
-      return <span className="tabular-nums">{format(date, "MMM dd, yyyy")}</span>;
-    },
-  },
-  {
-    accessorKey: "metadata.department",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Department" />,
-    cell: ({ row }) => <Badge variant="outline">{row.original.metadata.department}</Badge>,
   },
 ];
 

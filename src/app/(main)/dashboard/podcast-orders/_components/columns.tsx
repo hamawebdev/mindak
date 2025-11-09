@@ -2,23 +2,43 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowUpDown } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { PodcastReservationListItem, ReservationStatus } from "@/types/admin-api";
 
-import { PodcastOrder } from "./schema";
-
-const statusVariants: Record<PodcastOrder["status"], { variant: "default" | "secondary" | "destructive" | "outline"; label: string }> = {
-  pending: { variant: "outline", label: "Pending" },
-  processing: { variant: "secondary", label: "Processing" },
-  completed: { variant: "default", label: "Completed" },
-  cancelled: { variant: "destructive", label: "Cancelled" },
+const statusVariants: Record<
+  ReservationStatus,
+  { 
+    variant: "default" | "secondary" | "destructive" | "outline"; 
+    label: string;
+    className: string;
+  }
+> = {
+  pending: { 
+    variant: "outline", 
+    label: "Pending",
+    className: "bg-amber-500/10 text-amber-700 border-amber-500/30 dark:text-amber-400"
+  },
+  confirmed: { 
+    variant: "secondary", 
+    label: "Confirmed",
+    className: "bg-blue-500/10 text-blue-700 border-blue-500/30 dark:text-blue-400"
+  },
+  completed: { 
+    variant: "default", 
+    label: "Completed",
+    className: "bg-green-500/10 text-green-700 border-green-500/30 dark:text-green-400"
+  },
+  cancelled: { 
+    variant: "destructive", 
+    label: "Cancelled",
+    className: "bg-red-500/10 text-red-700 border-red-500/30 dark:text-red-400"
+  },
 };
 
-export const podcastOrderColumns: ColumnDef<PodcastOrder>[] = [
+export const podcastOrderColumns: ColumnDef<PodcastReservationListItem>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -43,73 +63,34 @@ export const podcastOrderColumns: ColumnDef<PodcastOrder>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Order ID" />,
-    cell: ({ row }) => <span className="font-medium tabular-nums">{row.original.id}</span>,
+    accessorKey: "confirmationId",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Confirmation ID" />,
+    cell: ({ row }) => <span className="font-medium tabular-nums">{row.original.confirmationId}</span>,
     enableHiding: false,
   },
   {
-    accessorKey: "customerName",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Customer Name" />,
-    cell: ({ row }) => <span className="font-medium">{row.original.customerName}</span>,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
-    cell: ({ row }) => <span className="text-muted-foreground">{row.original.email}</span>,
-  },
-  {
-    accessorKey: "podcastTitle",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Podcast Title" />,
-    cell: ({ row }) => <span>{row.original.podcastTitle}</span>,
+    accessorKey: "clientId",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Client ID" />,
+    cell: ({ row }) => <span className="font-mono text-xs text-muted-foreground">{row.original.clientId}</span>,
   },
   {
     accessorKey: "status",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
       const status = row.original.status;
-      const { variant, label } = statusVariants[status];
-      return <Badge variant={variant}>{label}</Badge>;
+      const { label, className } = statusVariants[status];
+      return <Badge className={className}>{label}</Badge>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
-    accessorKey: "category",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Category" />,
-    cell: ({ row }) => <Badge variant="outline">{row.original.category}</Badge>,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "budget",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Budget" />,
+    accessorKey: "submittedAt",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Submitted At" />,
     cell: ({ row }) => {
-      const amount = row.original.budget;
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-      return <span className="tabular-nums">{formatted}</span>;
-    },
-  },
-  {
-    accessorKey: "createdDate",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Created Date" />,
-    cell: ({ row }) => {
-      const date = new Date(row.original.createdDate);
-      return <span className="text-muted-foreground tabular-nums">{format(date, "MMM dd, yyyy")}</span>;
-    },
-  },
-  {
-    accessorKey: "deliveryDate",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Delivery Date" />,
-    cell: ({ row }) => {
-      const date = new Date(row.original.deliveryDate);
-      return <span className="tabular-nums">{format(date, "MMM dd, yyyy")}</span>;
+      const date = new Date(row.original.submittedAt);
+      return <span className="tabular-nums">{format(date, "MMM dd, yyyy h:mm a")}</span>;
     },
   },
 ];

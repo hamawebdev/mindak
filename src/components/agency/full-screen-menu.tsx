@@ -9,8 +9,8 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: "Réserver un service", href: "/reserver-service" },
-  { label: "Réserver un podcast", href: "/reserver-podcast" },
+  { label: "Réserver un service", href: "/briefing" },
+  { label: "Réserver un podcast", href: "podcast" },
 ];
 
 interface FullScreenMenuProps {

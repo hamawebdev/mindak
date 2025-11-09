@@ -1,30 +1,19 @@
 import { z } from "zod";
 
-export const serviceOrderSchema = z.object({
+import type { ServiceReservationListItem } from "@/types/admin-api";
+
+// Schema matching the API response structure
+export const serviceReservationSchema = z.object({
   id: z.string(),
-  customerName: z.string(),
-  email: z.string().email(),
-  status: z.enum(["pending", "in-progress", "completed", "cancelled"]),
-  createdDate: z.string(),
-  serviceType: z.string(),
-  priority: z.enum(["low", "medium", "high", "urgent"]),
-  estimatedCompletion: z.string(),
-  budget: z.number(),
-  notes: z.string().optional(),
-  formData: z.object({
-    projectDescription: z.string(),
-    requirements: z.string(),
-    deliverables: z.string(),
-    timeline: z.string(),
-    additionalNotes: z.string().optional(),
-  }),
-  metadata: z.object({
-    assignedTo: z.string().optional(),
-    department: z.string(),
-    tags: z.array(z.string()),
-    lastUpdated: z.string(),
-  }),
+  clientId: z.string(),
+  confirmationId: z.string(),
+  serviceIds: z.array(z.string()),
+  status: z.enum(["pending", "confirmed", "completed", "cancelled"]),
+  submittedAt: z.string(),
 });
 
-export type ServiceOrder = z.infer<typeof serviceOrderSchema>;
+export type ServiceReservation = z.infer<typeof serviceReservationSchema>;
+
+// Re-export the API type for consistency
+export type { ServiceReservationListItem };
 

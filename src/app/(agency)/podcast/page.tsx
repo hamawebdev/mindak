@@ -1,5 +1,5 @@
-import { BriefingForm } from "@/components/agency/briefing-form";
+import { PodcastFormQuestions } from "@/components/agency/podcast-form-questions";
 
-export default function BriefingPage() {
-  return <BriefingForm />;
+export default function PodcastPage() {
+  return <PodcastFormQuestions />;
 }

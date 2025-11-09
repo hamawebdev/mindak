@@ -1,7 +1,7 @@
 export const users = [
   {
     id: "1",
-    name: "Arham Khan",
+    name: "mindak admin",
     username: "Aarhamkhnz",
     email: "hello@arhamkhnz.com",
     avatar: "/avatars/arhamkhnz.png",
