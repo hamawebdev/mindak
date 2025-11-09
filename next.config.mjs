@@ -27,12 +27,12 @@ const nextConfig = {
         port: "8080",
         pathname: "/uploads/**",
       },
-      // Production - Add your domain here
-      // {
-      //   protocol: "https",
-      //   hostname: "your-domain.com",
-      //   pathname: "/uploads/**",
-      // },
+      // Production - Domain
+      {
+        protocol: "https",
+        hostname: "mindak.agency",
+        pathname: "/uploads/**",
+      },
     ],
   },
   async rewrites() {
