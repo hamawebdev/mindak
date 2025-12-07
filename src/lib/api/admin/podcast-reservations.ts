@@ -11,7 +11,10 @@ import type {
   UpdateReservationStatusResponse,
   CreatePodcastReservationRequest,
   UpdateScheduleRequest,
-  PodcastReservation
+  PodcastReservation,
+  Decor,
+  PackOffer,
+  Supplement
 } from "@/types/admin-api";
 
 /**

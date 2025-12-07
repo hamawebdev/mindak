@@ -10,6 +10,10 @@ export interface AdminApiError {
   error: string;
 }
 
+export interface UploadImageResponse {
+  image_url: string;
+}
+
 // Authentication Types
 export interface LoginCredentials {
   email: string;
@@ -304,6 +308,13 @@ export interface ServiceClientReservation {
   status: ReservationStatus;
   submittedAt: string;
   clientAnswers: ServiceClientAnswer[];
+}
+
+export interface ServiceClientDataResponse {
+  client: {
+    id: string;
+    reservations: ServiceClientReservation[];
+  };
 }
 
 export interface PodcastClientDataResponse {

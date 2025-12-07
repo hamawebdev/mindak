@@ -1,6 +1,6 @@
 "use client";
 
-import Autoplay from "embla-carousel-autoplay";
+// import Autoplay from "embla-carousel-autoplay";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -114,12 +114,12 @@ const Carousel_006 = ({
       plugins={
         autoplay
           ? [
-              Autoplay({
-                delay: 2000,
-                stopOnInteraction: true,
-                stopOnMouseEnter: true,
-              }),
-            ]
+            // Autoplay({
+            //   delay: 2000,
+            //   stopOnInteraction: true,
+            //   stopOnMouseEnter: true,
+            // }),
+          ]
           : []
       }
     >

@@ -107,16 +107,16 @@ export default function AddEventModal({
     }
   }
 
-  const getButtonVariant = (color: string) => {
+  const getButtonVariant = (color: string): "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" => {
     switch (color) {
       case "blue":
         return "default";
       case "red":
         return "destructive";
       case "green":
-        return "success";
+        return "default";
       case "yellow":
-        return "warning";
+        return "secondary";
       default:
         return "default";
     }
