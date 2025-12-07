@@ -48,13 +48,13 @@ export function FooterSection() {
                         <div className="flex flex-wrap justify-center items-center gap-x-4">
                             <BlurText
                                 text="Set Up,"
-                                className="text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-medium leading-[1.15] tracking-[-0.04em] font-custom-sans"
+                                className="text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-medium leading-[1.15] tracking-[-0.04em] font-custom-sans"
                                 delay={50}
                                 animateBy="letters"
                             />
                             <BlurText
                                 text="Sit Down"
-                                className="text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-emphasis italic font-normal leading-[1.15] tracking-[-0.04em]"
+                                className="text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-emphasis italic font-normal leading-[1.15] tracking-[-0.04em]"
                                 delay={50}
                                 animateBy="letters"
                             />
@@ -62,13 +62,13 @@ export function FooterSection() {
                         <div className="flex flex-wrap justify-center items-center gap-x-4">
                             <BlurText
                                 text="& let's Get"
-                                className="text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-medium leading-[1.15] tracking-[-0.04em] font-custom-sans"
+                                className="text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-medium leading-[1.15] tracking-[-0.04em] font-custom-sans"
                                 delay={50}
                                 animateBy="words"
                             />
                             <BlurText
                                 text="Some work done."
-                                className="text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-emphasis italic font-normal leading-[1.15] tracking-[-0.04em]"
+                                className="text-[32px] sm:text-[48px] md:text-[64px] lg:text-[80px] xl:text-[90px] font-emphasis italic font-normal leading-[1.15] tracking-[-0.04em]"
                                 delay={50}
                                 animateBy="words"
                             />

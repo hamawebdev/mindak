@@ -30,6 +30,9 @@ export function PodcastCalendar({
         selectedDate ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1) : new Date()
     );
 
+    // Ref for time selection section
+    const timeSelectionRef = React.useRef<HTMLDivElement>(null);
+
     // Update month when selectedDate changes
     React.useEffect(() => {
         if (selectedDate) {
@@ -103,7 +106,13 @@ export function PodcastCalendar({
                     <Calendar
                         mode="single"
                         selected={selectedDate}
-                        onSelect={onDateSelect}
+                        onSelect={(date) => {
+                            onDateSelect(date);
+                            // Auto-scroll to time selection on mobile
+                            if (typeof window !== 'undefined' && window.innerWidth < 1024 && timeSelectionRef.current) {
+                                timeSelectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
                         month={month}
                         onMonthChange={setMonth}
                         className="w-full max-w-[480px] bg-transparent p-0 [--cell-size:3rem]"
@@ -158,7 +167,7 @@ export function PodcastCalendar({
             </div>
 
             {/* Column 3: Time Selection */}
-            <div className="flex flex-col h-full order-2 lg:order-3">
+            <div ref={timeSelectionRef} className="flex flex-col h-full order-2 lg:order-3">
                 <div className="bg-[#1a1a1a] rounded-[2rem] p-6 border border-white/10 h-full min-h-[400px] flex flex-col relative overflow-hidden">
                     <div className="mb-4 shrink-0">
                         <h3 className="text-2xl font-bold text-white">Select time:</h3>

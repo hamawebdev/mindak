@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 import { AnimatePresence, motion, useSpring } from "framer-motion";
-import { Play, Plus } from "lucide-react";
+import { Play, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import BlurText from "@/components/ui/blur-text";
 import {
     VideoPlayer,
@@ -106,91 +105,19 @@ const REEL_SPACING = 24;     // Comfortable spacing for visual separation
 
 export function SamplesSection() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const reelsTrackRef = useRef<HTMLDivElement>(null);
-    const timelineRef = useRef<gsap.core.Timeline | null>(null);
     const [selectedReel, setSelectedReel] = useState<Reel | null>(null);
 
-    useEffect(() => {
-        if (!reelsTrackRef.current) return;
+    const scrollLeft = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollBy({ left: -(REEL_WIDTH + REEL_SPACING), behavior: 'smooth' });
+        }
+    };
 
-        const track = reelsTrackRef.current;
-
-        // Remove any existing clones first to prevent duplicates
-        const existingClones = track.querySelectorAll(".reel-clone");
-        existingClones.forEach((clone) => clone.remove());
-
-        const reelElements = track.querySelectorAll(".reel-item:not(.reel-clone)");
-
-        if (reelElements.length === 0) return;
-
-        // Calculate total width of one set of reels
-        const totalReelWidth = REEL_WIDTH + REEL_SPACING;
-        const totalWidth = totalReelWidth * reelElements.length;
-
-        // Clone reels for seamless looping
-        const clonedReels = Array.from(reelElements).map((reel) => {
-            const clone = reel.cloneNode(true) as HTMLElement;
-            clone.classList.add("reel-clone");
-            return clone;
-        });
-        clonedReels.forEach((clone) => track.appendChild(clone));
-
-        // Create GSAP timeline for smooth infinite animation
-        const tl = gsap.timeline({
-            repeat: -1,
-            defaults: {
-                ease: "none",
-            },
-        });
-
-        // Animate the track from right to left
-        // Duration controls speed - adjust for desired animation speed
-        // Higher duration = slower animation
-        tl.to(track, {
-            x: -totalWidth,
-            duration: 30, // Adjust this value to control speed (30 seconds for full cycle)
-            ease: "none",
-        });
-
-        timelineRef.current = tl;
-
-        // Pause on hover for better UX
-        const handleMouseEnter = () => {
-            if (timelineRef.current) {
-                gsap.to(timelineRef.current, {
-                    timeScale: 0,
-                    duration: 0.5,
-                    ease: "power2.out",
-                });
-            }
-        };
-
-        const handleMouseLeave = () => {
-            if (timelineRef.current) {
-                gsap.to(timelineRef.current, {
-                    timeScale: 1,
-                    duration: 0.5,
-                    ease: "power2.in",
-                });
-            }
-        };
-
-        track.addEventListener("mouseenter", handleMouseEnter);
-        track.addEventListener("mouseleave", handleMouseLeave);
-
-        // Cleanup
-        return () => {
-            if (timelineRef.current) {
-                timelineRef.current.kill();
-            }
-            track.removeEventListener("mouseenter", handleMouseEnter);
-            track.removeEventListener("mouseleave", handleMouseLeave);
-
-            // Clean up clones
-            const clonesToRemove = track.querySelectorAll(".reel-clone");
-            clonesToRemove.forEach((clone) => clone.remove());
-        };
-    }, [REEL_WIDTH, REEL_HEIGHT, REEL_SPACING]); // Re-run when dimensions change
+    const scrollRight = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollBy({ left: REEL_WIDTH + REEL_SPACING, behavior: 'smooth' });
+        }
+    };
 
     // Handle reel click to open video player modal
     const handleReelClick = (reel: Reel) => {
@@ -229,28 +156,48 @@ export function SamplesSection() {
                 )}
             </AnimatePresence>
 
-            {/* Reels Container */}
-            <div ref={containerRef} className="relative w-full overflow-hidden">
+            {/* Reels Container Wrapper */}
+            <div className="relative w-full">
                 {/* Gradient Overlays for fade effect */}
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-black to-transparent md:w-48" />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-black to-transparent md:w-48" />
 
-                {/* Animated Reels Track */}
-                <div
-                    ref={reelsTrackRef}
-                    className="flex"
-                    style={{
-                        gap: `${REEL_SPACING}px`,
-                        willChange: "transform",
-                    }}
+                {/* Left Arrow - Fixed to left viewport edge */}
+                <button
+                    onClick={scrollLeft}
+                    className="absolute left-0 top-1/2 z-20 -translate-y-1/2 rounded-r-xl bg-white/10 p-4 backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105 active:scale-95"
+                    aria-label="Scroll left"
                 >
-                    {SAMPLE_REELS.map((reel) => (
-                        <ReelItem
-                            key={reel.id}
-                            reel={reel}
-                            onClick={() => handleReelClick(reel)}
-                        />
-                    ))}
+                    <ChevronLeft className="h-8 w-8 text-white" />
+                </button>
+
+                {/* Right Arrow - Fixed to right viewport edge */}
+                <button
+                    onClick={scrollRight}
+                    className="absolute right-0 top-1/2 z-20 -translate-y-1/2 rounded-l-xl bg-white/10 p-4 backdrop-blur-md transition-all hover:bg-white/20 hover:scale-105 active:scale-95"
+                    aria-label="Scroll right"
+                >
+                    <ChevronRight className="h-8 w-8 text-white" />
+                </button>
+
+                {/* Reels Scrollable Track */}
+                <div ref={containerRef} className="relative w-full overflow-x-auto hide-scrollbar">
+                    <div
+                        className="flex"
+                        style={{
+                            gap: `${REEL_SPACING}px`,
+                            paddingLeft: '5rem', /* Increased padding to accommodate arrows */
+                            paddingRight: '5rem',
+                        }}
+                    >
+                        {SAMPLE_REELS.map((reel) => (
+                            <ReelItem
+                                key={reel.id}
+                                reel={reel}
+                                onClick={() => handleReelClick(reel)}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
@@ -283,7 +230,7 @@ const ReelItem = ({ reel, onClick }: ReelItemProps) => {
 
     return (
         <div
-            className="reel-item group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 ease-out hover:scale-[1.08] hover:shadow-[0_20px_60px_rgba(0,0,0,0.8)]"
+            className={`reel-item relative flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-2xl transition-all duration-500 ease-out ${isHovered ? 'scale-[1.08] shadow-[0_20px_60px_rgba(0,0,0,0.8)]' : ''}`}
             style={{
                 width: `${REEL_WIDTH}px`,
                 height: `${REEL_HEIGHT}px`,
@@ -303,19 +250,12 @@ const ReelItem = ({ reel, onClick }: ReelItemProps) => {
                 className="h-full w-full object-cover"
             />
 
-            {/* Animated Play Button that follows cursor (Skiper67 style) */}
-            <motion.div
-                style={{ x, y, opacity }}
-                className="relative z-20 flex w-fit select-none items-center justify-center gap-2 p-2 text-sm text-white mix-blend-exclusion"
-            >
-                <Play className="size-4 fill-white" /> Play
-            </motion.div>
 
             {/* Play Icon Overlay - Shows on hover with scale animation */}
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-all duration-500 group-hover:opacity-100">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/95 backdrop-blur-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-all duration-500 hover:opacity-100">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/95 backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white">
                     <svg
-                        className="ml-1 h-10 w-10 text-black transition-transform duration-500 group-hover:scale-110"
+                        className="ml-1 h-10 w-10 text-black transition-transform duration-500 hover:scale-110"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                     >
@@ -325,7 +265,7 @@ const ReelItem = ({ reel, onClick }: ReelItemProps) => {
             </div>
 
             {/* Overlay gradient for better visual effect */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100" />
 
 
         </div>

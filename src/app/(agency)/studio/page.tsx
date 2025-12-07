@@ -6,6 +6,7 @@ import Button from "@/components/ui/cta-button";
 import { StudioBurgerMenu } from "@/components/agency/studio/studio-burger-menu";
 import { StudioFullScreenMenu } from "@/components/agency/studio/studio-full-screen-menu";
 import { SamplesSection } from "@/components/agency/studio/samples-section";
+import { VideoSection } from "@/components/agency/studio/video-section";
 import { AboutUsSection } from "@/components/agency/studio/about-us-section";
 import { TestimonialsSectionDemo } from "@/components/ui/testmonial-demo";
 import { FAQSection } from "@/components/agency/studio/faq-section";
@@ -138,6 +139,9 @@ export default function StudioPage() {
 
             {/* Samples Section */}
             <SamplesSection />
+
+            {/* Video Section */}
+            <VideoSection />
 
             {/* About Us Section */}
             <AboutUsSection />
