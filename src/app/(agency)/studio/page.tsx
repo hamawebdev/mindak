@@ -124,8 +124,8 @@ export default function StudioPage() {
 
                         {/* Sub-text */}
                         <div className="text-white/85 text-sm md:text-lg lg:text-xl font-light drop-shadow-md font-custom-sans leading-relaxed" style={{ marginTop: '30px' }}>
-                            <span className="md:hidden">Mindak Studio est un studio de création haut de gamme à Alger, spécialisé dans la production vidéo, les podcasts, les shootings produits et la création de contenu professionnel.<br />Nous offrons un espace moderne, du matériel de dernière génération et un accompagnement complet pour garantir un rendu premium.<br />Idéal pour les marques, créateurs et entreprises à la recherche d'une location de studio à Alger avec une qualité exceptionnelle.</span>
-                            <span className="hidden md:block">Mindak Studio est un studio de création haut de gamme à Alger, spécialisé dans la production vidéo, les podcasts, les shootings produits et la création de contenu professionnel.<br />Nous offrons un espace moderne, du matériel de dernière génération et un accompagnement complet pour garantir un rendu premium.<br />Idéal pour les marques, créateurs et entreprises à la recherche d'une location de studio à Alger avec une qualité exceptionnelle.</span>
+                            <span className="md:hidden">Un espace professionnel, un son de qualité<br />et du matériel fiable. Réservez votre créneau</span>
+                            <span className="hidden md:block">Un espace professionnel, un son de qualité et du matériel fiable.<br />Réservez votre créneau</span>
                         </div>
 
                         {/* CTA Button */}
