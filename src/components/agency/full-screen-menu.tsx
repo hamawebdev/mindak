@@ -109,7 +109,7 @@ export function FullScreenMenu({ isOpen }: FullScreenMenuProps) {
                   color: "#E8E4DF",
                   fontSize: "clamp(40px, 8vw, 80px)",
                   fontWeight: 700,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "-0.04em",
                   lineHeight: 1.2,
                   textDecoration: "none",
                   WebkitFontSmoothing: "antialiased",

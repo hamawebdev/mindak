@@ -1,5 +1,5 @@
-import { HeroHeader } from "@/components/agency/hero-header";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return <HeroHeader />;
+  redirect('/studio');
 }

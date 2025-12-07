@@ -33,17 +33,17 @@ export function HeroHeader() {
   useEffect(() => {
     if (!isVideoLoaded && logoLoaderRef.current) {
       const logo = logoLoaderRef.current;
-      
+
       // Set initial state
-      gsap.set(logo, { 
-        opacity: 0, 
+      gsap.set(logo, {
+        opacity: 0,
         scale: 0.8,
         y: 0
       });
-      
+
       // Create looping animation timeline
       const tl = gsap.timeline({ repeat: -1 });
-      
+
       // Fade in and scale up
       tl.to(logo, {
         opacity: 1,
@@ -51,18 +51,18 @@ export function HeroHeader() {
         duration: 0.8,
         ease: "power2.out"
       })
-      // Gentle float up and down
-      .to(logo, {
-        y: -15,
-        duration: 1.5,
-        ease: "sine.inOut"
-      })
-      .to(logo, {
-        y: 0,
-        duration: 1.5,
-        ease: "sine.inOut"
-      });
-      
+        // Gentle float up and down
+        .to(logo, {
+          y: -15,
+          duration: 1.5,
+          ease: "sine.inOut"
+        })
+        .to(logo, {
+          y: 0,
+          duration: 1.5,
+          ease: "sine.inOut"
+        });
+
       return () => {
         tl.kill();
       };
@@ -104,11 +104,11 @@ export function HeroHeader() {
     <div className="relative min-h-screen flex flex-col box-border overflow-hidden" style={{ backgroundColor: "#E8E4DF" }}>
       {/* Video Loading Overlay */}
       {!isVideoLoaded && (
-        <div 
+        <div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ 
+          style={{
             backgroundColor: "#000000",
-            zIndex: 300 
+            zIndex: 300
           }}
         >
           <img
@@ -162,7 +162,7 @@ export function HeroHeader() {
               priority
             />
           </div>
-          
+
           {/* Burger Menu - Right */}
           <div className="flex-shrink-0">
             <BurgerMenu isOpen={isMenuOpen} onToggle={toggleMenu} />
@@ -175,12 +175,12 @@ export function HeroHeader() {
         <div className="flex flex-col justify-center items-center relative w-full max-w-[1200px] gap-6 sm:gap-8 md:gap-10">
           {/* Main Title */}
           <h1 className="m-0 p-0 text-center relative w-full">
-            <span 
+            <span
               className="block font-black m-0 p-0 text-white"
               style={{
                 fontSize: "clamp(72px, 18vw, 280px)",
                 lineHeight: 0.9,
-                letterSpacing: "-0.03em",
+                letterSpacing: "-0.04em",
                 WebkitFontSmoothing: "antialiased",
                 textRendering: "optimizeLegibility",
                 textShadow: "0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)",
@@ -193,7 +193,7 @@ export function HeroHeader() {
 
           {/* Tagline */}
           <div className="relative text-center box-border px-2 sm:px-4 md:px-6">
-            <p 
+            <p
               className="m-0 max-w-[85vw] sm:max-w-[600px] md:max-w-[850px] lg:max-w-[950px] xl:max-w-[1100px] mx-auto text-white/95"
               style={{
                 fontSize: "clamp(15px, 3.8vw, 20px)",
@@ -236,14 +236,14 @@ export function HeroHeader() {
       </section>
 
       {/* Social Links Footer */}
-      <footer 
+      <footer
         className="absolute left-0 right-0 flex flex-col justify-end box-border bottom-8 md:bottom-12 lg:bottom-0"
         style={{
           padding: "0 clamp(20px, 4vw, 40.192px)",
           zIndex: 100,
         }}
       >
-        <ul 
+        <ul
           className="flex justify-between overflow-hidden relative box-border list-none m-0 pt-5 md:pt-8 lg:pt-0"
         >
           {socialLinks.map((link, index) => (

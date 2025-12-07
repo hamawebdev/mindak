@@ -14,7 +14,7 @@ export class ApiClient {
     options?: RequestInit
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
     try {
       const response = await fetch(url, {
         ...options,
@@ -31,7 +31,7 @@ export class ApiClient {
             statusCode: response.status,
           }
         }));
-        
+
         const errorMessage = error.error?.message || error.message || `HTTP ${response.status}`;
         console.error(`[API Client] Error response from ${url}:`, error);
         throw new Error(errorMessage);
@@ -44,8 +44,24 @@ export class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: "GET" });
+  async get<T>(
+    endpoint: string,
+    config?: { params?: Record<string, any> }
+  ): Promise<T> {
+    let url = endpoint;
+    if (config?.params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(config.params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += (url.includes("?") ? "&" : "?") + queryString;
+      }
+    }
+    return this.request<T>(url, { method: "GET" });
   }
 
   async post<T>(endpoint: string, data: unknown): Promise<T> {

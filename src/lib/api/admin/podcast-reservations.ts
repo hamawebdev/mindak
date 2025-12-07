@@ -9,12 +9,75 @@ import type {
   ReservationListQueryParams,
   UpdateReservationStatusRequest,
   UpdateReservationStatusResponse,
+  CreatePodcastReservationRequest,
+  UpdateScheduleRequest,
+  PodcastReservation
 } from "@/types/admin-api";
 
 /**
  * Podcast Reservations Admin API
  * Based on ADMIN_API_DOCUMENTATION.md
  */
+
+/**
+ * Create a new podcast reservation
+ */
+export async function createPodcastReservation(
+  data: CreatePodcastReservationRequest
+): Promise<{ reservation: PodcastReservation }> {
+  const response = await adminApiClient.post<AdminApiResponse<{ reservation: PodcastReservation }>>(
+    "/api/v1/admin/reservations/podcast",
+    data
+  );
+  return response.data;
+}
+
+/**
+ * Update the schedule of a reservation (Drag & Drop)
+ */
+export async function updatePodcastReservationSchedule(
+  reservationId: string,
+  data: UpdateScheduleRequest
+): Promise<{ reservation: PodcastReservation }> {
+  const response = await adminApiClient.patch<AdminApiResponse<{ reservation: PodcastReservation }>>(
+    `/api/v1/admin/reservations/podcast/${reservationId}/schedule`,
+    data
+  );
+  return response.data;
+}
+
+/**
+ * Get confirmed reservations for calendar
+ */
+/**
+ * Get confirmed reservations for calendar
+ */
+export async function getConfirmedPodcastCalendar(
+  date?: string
+): Promise<PodcastReservation[]> {
+  const params = new URLSearchParams();
+  if (date) params.append("date", date);
+
+  const response = await adminApiClient.get<AdminApiResponse<PodcastReservation[]>>(
+    `/api/v1/admin/reservations/podcast/calendar/confirmed?${params.toString()}`
+  );
+  return response.data;
+}
+
+/**
+ * Get pending reservations for calendar
+ */
+export async function getPendingPodcastCalendar(
+  date?: string
+): Promise<PodcastReservation[]> {
+  const params = new URLSearchParams();
+  if (date) params.append("date", date);
+
+  const response = await adminApiClient.get<AdminApiResponse<PodcastReservation[]>>(
+    `/api/v1/admin/reservations/podcast/calendar/pending?${params.toString()}`
+  );
+  return response.data;
+}
 
 /**
  * List all podcast reservations with pagination and filtering
@@ -86,6 +149,36 @@ export async function addPodcastReservationNote(
   const response = await adminApiClient.post<AdminApiResponse<AddReservationNoteResponse>>(
     `/api/v1/admin/reservations/podcast/${reservationId}/notes`,
     data
+  );
+  return response.data;
+}
+
+/**
+ * Get available decors
+ */
+export async function getAvailableDecors(): Promise<Decor[]> {
+  const response = await adminApiClient.get<AdminApiResponse<Decor[]>>(
+    "/api/v1/admin/reservations/podcast/decors"
+  );
+  return response.data;
+}
+
+/**
+ * Get available packs
+ */
+export async function getAvailablePacks(): Promise<PackOffer[]> {
+  const response = await adminApiClient.get<AdminApiResponse<PackOffer[]>>(
+    "/api/v1/admin/reservations/podcast/packs"
+  );
+  return response.data;
+}
+
+/**
+ * Get available supplements
+ */
+export async function getAvailableSupplements(): Promise<Supplement[]> {
+  const response = await adminApiClient.get<AdminApiResponse<Supplement[]>>(
+    "/api/v1/admin/reservations/podcast/supplements"
   );
   return response.data;
 }

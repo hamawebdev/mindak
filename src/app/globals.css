@@ -1,6 +1,31 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Custom Font Declarations */
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/HelveticaNeue.ttc') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue Medium';
+  src: url('/helveticaneue-medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Riccione Serial';
+  src: url('/fonnts.com-riccione_serial-xlightitalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* Theme preset styles: these override CSS variables based on the selected data-theme-preset */
 @import "../styles/presets/brutalist.css";
 @import "../styles/presets/soft-pop.css";
@@ -44,6 +69,41 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  --animate-scroll: scroll 20s linear infinite;
+
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 /* Default theme styles (used when no data-theme-preset is set or when 'default' is selected).
@@ -219,6 +279,7 @@ These serve as the fallback; there is no separate default.css file. */
 body {
   letter-spacing: var(--tracking-normal);
 }
+
 @layer utilities {
   [data-theme-preset]:not([data-theme-preset="default"]) .shadow-2xs {
     box-shadow: var(--shadow-2xs);
@@ -251,6 +312,35 @@ body {
   [data-theme-preset]:not([data-theme-preset="default"]) .shadow-2xl {
     box-shadow: var(--shadow-2xl);
   }
+
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-[#71ff7b] to-[#1f8bff];
+  }
+
+  .text-gradient-primary {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-[#71ff7b] to-[#1f8bff];
+  }
+
+  .border-primary-solid {
+    @apply border-[#71ff7b];
+  }
+
+  .border-gradient {
+    border: none;
+  }
+
+  .border-gradient:focus {
+    border: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(113,255,123,1) 0%, rgba(31,139,255,1) 100%) 1;
+  }
+
+  .font-helvetica-medium {
+    font-family: 'Helvetica Neue Medium', var(--font-sans);
+  }
+
+  .italic-riccione {
+    font-family: 'Riccione Serial', var(--font-sans);
+  }
 }
 
 @layer base {
@@ -264,5 +354,13 @@ body {
 }
 
 .disable-transitions * {
-  transition: none !important;
+transition: none !important;
+}
+
+.rdp-today button {
+color: black !important;
+}
+
+.rdp-today button:hover {
+color: black !important;
 }

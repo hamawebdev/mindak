@@ -52,6 +52,8 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
           // Adds right margin for inset sidebar in centered layout up to 113rem.
           // On wider screens with collapsed sidebar, removes margin and sets margin auto for alignment.
           "max-[113rem]:peer-data-[variant=inset]:!mr-2 min-[101rem]:peer-data-[variant=inset]:peer-data-[state=collapsed]:!mr-auto",
+          // Remove borders for inset variant
+          "md:peer-data-[variant=inset]:rounded-none md:peer-data-[variant=inset]:shadow-none",
         )}
       >
         <header

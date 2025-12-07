@@ -64,12 +64,14 @@ export interface FormQuestion {
   question_text: string;
   question_type: QuestionType;
   required: boolean;
+  stepId?: string;
   order: number;
   placeholder: string | null;
   help_text: string | null;
   validation_rules: Record<string, any> | null;
   is_active: boolean;
   answers: QuestionAnswer[];
+  fieldName?: string; // Field key for backend mapping
   created_at: string;
   updated_at: string;
 }
@@ -84,10 +86,12 @@ export interface CreateQuestionRequest {
   question_text: string;
   question_type: QuestionType;
   required: boolean;
+  stepId?: string;
   order: number;
   placeholder?: string | null;
   help_text?: string | null;
   validation_rules?: Record<string, any> | null;
+  fieldName?: string;
   is_active: boolean;
 }
 
@@ -100,10 +104,12 @@ export interface UpdateQuestionRequest {
   question_text?: string;
   question_type?: QuestionType;
   required?: boolean;
+  stepId?: string;
   order?: number;
   placeholder?: string | null;
   help_text?: string | null;
   validation_rules?: Record<string, any> | null;
+  fieldName?: string;
   is_active?: boolean;
 }
 
@@ -212,6 +218,43 @@ export interface PodcastReservationDetails {
   id: string;
   confirmationId: string;
   status: ReservationStatus;
+  startAt: string;
+  endAt: string;
+  calendarStart: string;
+  calendarEnd: string;
+  durationHours: number;
+  timezone: string;
+  customer: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  decor?: {
+    id: string;
+    name: string;
+    imageUrl?: string;
+  };
+  theme?: {
+    id: string;
+    name: string;
+    description?: string;
+  };
+  customTheme?: string;
+  podcastDescription?: string;
+  packOffer?: {
+    id: string;
+    name: string;
+    basePrice: number;
+  };
+  supplements?: Array<{
+    id: string;
+    name: string;
+    priceAtBooking: number;
+  }>;
+  totalPrice: number;
+  assignedAdminId?: string;
+  confirmedByAdminId?: string;
+  confirmedAt?: string;
   clientAnswers: ClientAnswer[];
   clientIp: string | null;
   userAgent: string | null;
@@ -270,11 +313,63 @@ export interface PodcastClientDataResponse {
   };
 }
 
-export interface ServiceClientDataResponse {
-  client: {
-    id: string;
-    reservations: ServiceClientReservation[];
-  };
+export interface PodcastReservation {
+  id: string;
+  confirmationId: string;
+  status: ReservationStatus;
+  startAt: string;
+  endAt: string;
+  calendarStart: string;
+  calendarEnd: string;
+  durationHours: number;
+  timezone: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  totalPrice?: number;
+  assignedAdminId?: string;
+  createdAt: string;
+  confirmedAt?: string;
+}
+
+export interface CreatePodcastReservationRequest {
+  startAt: string;
+  endAt: string;
+  timezone?: string;
+  status?: ReservationStatus;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  decorId?: string;
+  themeId?: string;
+  customTheme?: string;
+  podcastDescription?: string;
+  packOfferId?: string;
+  supplementIds?: string[];
+  assignedAdminId?: string;
+  notes?: string;
+  answers?: Array<{
+    questionId: string;
+    answerText: string;
+    // The spec mentions fieldName/label/value in RESPONSE, but for REQUEST usually only ID and text are needed.
+    // However, to align with the spec's "answers" object in response, we might just send what's needed.
+    // Keeping it simple for request.
+  }>;
+}
+
+export interface UpdateScheduleRequest {
+  startAt: string;
+  endAt: string;
+  timezone?: string;
+  keepStatus?: boolean;
+  status?: ReservationStatus;
+  reason?: string;
+}
+
+export interface CalendarFeedResponse {
+  reservations: PodcastReservation[];
+  start: string;
+  end: string;
 }
 
 // Update Status Types
@@ -323,6 +418,144 @@ export interface ServicesQuestionsQueryParams {
 }
 
 // Image Upload Types
-export interface UploadImageResponse {
-  image_url: string;
+export interface Decor {
+  id: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  isActive: boolean;
+  sortOrder: number;
+}
+
+export interface PackOffer {
+  id: string;
+  name: string;
+  description?: string;
+  basePrice: number;
+  durationMin: number;
+  sortOrder: number;
+  isActive: boolean;
+  metadata?: PackMetadataItem[];
+}
+
+export interface Supplement {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+export interface Theme {
+  id: string;
+  name: string;
+  description?: string;
+  isActive: boolean;
+  sortOrder: number;
+}
+
+export interface CreateThemeRequest {
+  name: string;
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface UpdateThemeRequest {
+  name?: string;
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+// Pack Management
+export interface PackMetadataItem {
+  key: string;
+  label: string;
+  type: "text" | "textarea" | "number" | "boolean" | "select" | "list";
+  value: any;
+}
+
+export interface CreatePackRequest {
+  name: string;
+  basePrice: number;
+  durationMin: number;
+  metadata?: PackMetadataItem[];
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface UpdatePackRequest {
+  name?: string;
+  basePrice?: number;
+  durationMin?: number;
+  metadata?: PackMetadataItem[];
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+// Decor Management
+export interface CreateDecorRequest {
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface UpdateDecorRequest {
+  name?: string;
+  description?: string;
+  imageUrl?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+// Supplement Management
+export interface CreateSupplementRequest {
+  name: string;
+  price: number;
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface UpdateSupplementRequest {
+  name?: string;
+  price?: number;
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+// Form Step Management
+export interface FormStep {
+  id: string;
+  title: string;
+  description?: string;
+  orderIndex: number;
+  isActive: boolean;
+  questions?: FormQuestion[];
+}
+
+export interface CreateStepRequest {
+  title: string;
+  description?: string;
+  orderIndex?: number;
+  isActive?: boolean;
+}
+
+export interface UpdateStepRequest {
+  title?: string;
+  description?: string;
+  orderIndex?: number;
+  isActive?: boolean;
+}
+
+export interface FormStructureResponse {
+  steps: FormStep[];
+  unassignedQuestions: FormQuestion[];
 }

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { FacebookPixel } from "@/components/analytics/facebook-pixel";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -32,8 +33,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     >
       <body className={`${inter.className} min-h-screen antialiased`}>
         <PreferencesStoreProvider themeMode={themeMode} themePreset={themePreset}>
+          <FacebookPixel />
           {children}
-          <FrontextInit />
+          {<FrontextInit />}
           <Toaster />
         </PreferencesStoreProvider>
       </body>

@@ -37,7 +37,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { createPodcastQuestion, updatePodcastQuestion } from "@/lib/api/admin/podcast-forms";
-import type { FormQuestion, QuestionType } from "@/types/admin-api";
+import { getSteps } from "@/lib/api/admin/podcast-configuration";
+import type { FormQuestion, QuestionType, FormStep } from "@/types/admin-api";
 
 const questionTypes: { value: QuestionType; label: string }[] = [
   { value: "text", label: "Text" },
@@ -74,6 +75,8 @@ const formSchema = z.object({
   help_text: z.string().optional(),
   is_active: z.boolean(),
   validation_rules: z.string().optional(),
+  fieldName: z.string().optional(),
+  stepId: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -87,6 +90,7 @@ interface QuestionFormDialogProps {
 
 export function QuestionFormDialog({ open, onOpenChange, question, onSuccess }: QuestionFormDialogProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [steps, setSteps] = React.useState<FormStep[]>([]);
   const isEdit = !!question;
 
   const form = useForm<FormValues>({
@@ -100,32 +104,44 @@ export function QuestionFormDialog({ open, onOpenChange, question, onSuccess }: 
       help_text: "",
       is_active: true,
       validation_rules: "",
+      fieldName: "",
+      stepId: "unassigned", // Default or unassigned
     },
   });
 
   React.useEffect(() => {
-    if (question) {
-      form.reset({
-        question_text: question.question_text,
-        question_type: question.question_type,
-        required: question.required,
-        order: question.order,
-        placeholder: question.placeholder ?? "",
-        help_text: question.help_text ?? "",
-        is_active: question.is_active,
-        validation_rules: question.validation_rules ? JSON.stringify(question.validation_rules, null, 2) : "",
-      });
-    } else {
-      form.reset({
-        question_text: "",
-        question_type: "text",
-        required: true,
-        order: 1,
-        placeholder: "",
-        help_text: "",
-        is_active: true,
-        validation_rules: "",
-      });
+    if (open) {
+      getSteps().then((data) => {
+        setSteps(data.sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0)));
+      }).catch(console.error);
+
+      if (question) {
+        form.reset({
+          question_text: question.question_text,
+          question_type: question.question_type,
+          required: question.required,
+          order: question.order,
+          placeholder: question.placeholder ?? "",
+          help_text: question.help_text ?? "",
+          is_active: question.is_active,
+          validation_rules: question.validation_rules ? JSON.stringify(question.validation_rules, null, 2) : "",
+          fieldName: question.fieldName ?? "",
+          stepId: question.stepId ?? "unassigned",
+        });
+      } else {
+        form.reset({
+          question_text: "",
+          question_type: "text",
+          required: true,
+          order: 1,
+          placeholder: "",
+          help_text: "",
+          is_active: true,
+          validation_rules: "",
+          fieldName: "",
+          stepId: "unassigned",
+        });
+      }
     }
   }, [question, form, open]);
 
@@ -152,6 +168,8 @@ export function QuestionFormDialog({ open, onOpenChange, question, onSuccess }: 
         help_text: values.help_text || null,
         validation_rules: validationRules,
         is_active: values.is_active,
+        fieldName: values.fieldName || undefined,
+        stepId: values.stepId === "unassigned" ? undefined : values.stepId,
       };
 
       if (isEdit) {
@@ -223,6 +241,33 @@ export function QuestionFormDialog({ open, onOpenChange, question, onSuccess }: 
                 </FormItem>
               )}
             />
+            
+            <FormField
+              control={form.control}
+              name="stepId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Form Step</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a step" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="unassigned">-- Unassigned --</SelectItem>
+                      {steps.map((step) => (
+                        <SelectItem key={step.id} value={step.id}>
+                          {step.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>Assign this question to a specific step in the wizard</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -273,6 +318,20 @@ export function QuestionFormDialog({ open, onOpenChange, question, onSuccess }: 
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="fieldName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Field Name (Internal Key)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. customer_email" {...field} />
+                  </FormControl>
+                  <FormDescription>Unique key for mapping (required for system fields)</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
