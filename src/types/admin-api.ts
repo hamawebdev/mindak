@@ -474,7 +474,7 @@ export interface PackMetadataItem {
   key: string;
   label: string;
   type: "text" | "textarea" | "number" | "boolean" | "select" | "list";
-  value: any;
+  value?: any;
 }
 
 export interface CreatePackRequest {
