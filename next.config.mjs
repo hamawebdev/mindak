@@ -5,6 +5,11 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  turbopack: {
+    resolveAlias: {
+      // Add any path aliases here if needed
+    },
+  },
   images: {
     remotePatterns: [
       // Development
